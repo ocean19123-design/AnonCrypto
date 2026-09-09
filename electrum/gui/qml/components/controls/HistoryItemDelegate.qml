@@ -40,7 +40,10 @@ Item {
             Layout.fillWidth: true
             Layout.preferredHeight: txinfo.height
             // suppress Material press overlay, it flickers on rows during touch scroll
-            background: null
+            background: Rectangle {
+                color: delegate.hovered ? constants.anonHoverBackground : "transparent"
+                radius: constants.paddingSmall
+            }
 
             onClicked: {
                 if (model.lightning) {
@@ -62,8 +65,8 @@ Item {
                 id: txinfo
                 columns: 3
 
-                x: constants.paddingSmall
-                width: delegate.width - 2*constants.paddingSmall
+                x: constants.paddingMedium
+                width: delegate.width - 2*constants.paddingMedium
 
                 Item { Layout.columnSpan: 3; Layout.preferredWidth: 1; Layout.preferredHeight: constants.paddingSmall }
 
@@ -95,7 +98,7 @@ Item {
                     Layout.fillWidth: true
                     font.pixelSize: model.label !== '' ? constants.fontSizeLarge : constants.fontSizeMedium
                     text: model.label !== '' ? model.label : qsTr('<no label>')
-                    color: model.label !== '' ? Material.foreground : constants.mutedForeground
+                    color: model.label !== '' ? constants.anonTextPrimary : constants.anonTextSecondary
                     wrapMode: Text.Wrap
                     maximumLineCount: 2
                     elide: Text.ElideRight
@@ -106,7 +109,7 @@ Item {
                     font.pixelSize: constants.fontSizeMedium
                     Layout.alignment: Qt.AlignRight
                     font.bold: true
-                    color: model.value.satsInt >= 0 ? constants.colorCredit : constants.colorDebit
+                    color: model.value.satsInt >= 0 ? constants.anonPositive : constants.anonNegative
 
                     function updateText() {
                         text = Config.formatSats(model.value)
@@ -116,13 +119,13 @@ Item {
                 Label {
                     font.pixelSize: constants.fontSizeSmall
                     text: model.date ? model.date : ''
-                    color: constants.mutedForeground
+                    color: constants.anonTextSecondary
                 }
                 Label {
                     id: fiatLabel
                     font.pixelSize: constants.fontSizeSmall
                     Layout.alignment: Qt.AlignRight
-                    color: constants.mutedForeground
+                    color: constants.anonTextSecondary
 
                     function updateText() {
                         if (delegate.pooled || delegate.listDragActive || !Daemon.fx.enabled) {
@@ -147,8 +150,8 @@ Item {
             visible: delegate.ListView.section == delegate.ListView.nextSection
             Layout.preferredWidth: parent.width * 2/3
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredHeight: constants.paddingXXSmall
-            color: Material.background
+            Layout.preferredHeight: 1
+            color: constants.anonBorder
         }
 
     }
