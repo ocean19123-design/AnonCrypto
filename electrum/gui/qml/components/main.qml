@@ -130,15 +130,22 @@ ApplicationWindow
         topPadding: app.statusBarHeight
 
         background: Rectangle {
-            implicitHeight: 48
-            color: constants.dialogColor
+    implicitHeight: 56
+    color: constants.anonCardBackground
 
-            layer.enabled: true
-            layer.effect: ElevationEffect {
-                elevation: 4
-                fullWidth: true
-            }
-        }
+    layer.enabled: true
+    layer.effect: ElevationEffect {
+        elevation: 2
+        fullWidth: true
+    }
+
+    Rectangle {
+        anchors.bottom: parent.bottom
+        width: parent.width
+        height: 1
+        color: constants.anonBorder
+    }
+}
 
         ColumnLayout {
             spacing: 0
@@ -175,25 +182,36 @@ ApplicationWindow
                             Layout.preferredHeight: 1
                         }
 
-                        Image {
-                            Layout.preferredWidth: constants.iconSizeSmall
-                            Layout.preferredHeight: constants.iconSizeSmall
-                            visible: Daemon.currentWallet &&
-                                (!stack.currentItem || !stack.currentItem.title || stack.currentItem.title == Daemon.currentWallet.name)
-                            source: '../../icons/wallet.png'
-                        }
+                        Rectangle {
+    Layout.preferredWidth: constants.iconSizeMedium
+    Layout.preferredHeight: constants.iconSizeMedium
+    Layout.leftMargin: constants.paddingSmall
+    radius: constants.iconSizeMedium / 2
+    color: constants.anonAccent
+    visible: Daemon.currentWallet &&
+        (!stack.currentItem || !stack.currentItem.title || stack.currentItem.title == Daemon.currentWallet.name)
+
+    Label {
+        anchors.centerIn: parent
+        text: "AF"
+        font.pixelSize: constants.fontSizeXSmall
+        font.bold: true
+        color: "white"
+    }
+}
 
                         Label {
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: Math.max(implicitHeight, toolbarTopLayout.height)
-                            text: stack.currentItem && stack.currentItem.title
-                                ? stack.currentItem.title
-                                : Daemon.currentWallet.name
-                            elide: Label.ElideRight
-                            verticalAlignment: Qt.AlignVCenter
-                            font.pixelSize: constants.fontSizeMedium
-                            font.bold: true
-                        }
+    Layout.fillWidth: true
+    Layout.preferredHeight: Math.max(implicitHeight, toolbarTopLayout.height)
+    text: stack.currentItem && stack.currentItem.title
+        ? stack.currentItem.title
+        : Daemon.currentWallet.name
+    elide: Label.ElideRight
+    verticalAlignment: Qt.AlignVCenter
+    font.pixelSize: constants.fontSizeLarge
+    font.bold: true
+    color: constants.anonTextPrimary
+}
                     }
                 }
 
@@ -627,8 +645,8 @@ ApplicationWindow
                 app.close()
             })
             dialog.open()
-            close.accepted = fals
-        }
+            close.accepted = false
+                    }
     }
 
         property var _loadingWalletContext: null
