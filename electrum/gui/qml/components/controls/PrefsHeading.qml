@@ -7,4 +7,8 @@ Heading {
 
     Layout.topMargin: constants.paddingXLarge
     Layout.bottomMargin: constants.paddingMedium
+
+    font.pixelSize: constants.fontSizeMedium
+    font.bold: true
+    color: constants.anonAccent
 }
