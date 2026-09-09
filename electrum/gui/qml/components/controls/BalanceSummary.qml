@@ -23,31 +23,61 @@ Item {
         }
     }
 
-    TextHighlightPane {
+    Rectangle {
         id: balancePane
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: constants.paddingLarge
+
         leftPadding: constants.paddingXLarge
         rightPadding: constants.paddingXLarge
+        topPadding: constants.paddingXLarge
+        bottomPadding: constants.paddingXLarge
+
+        radius: constants.paddingLarge
+        color: constants.anonCardBackground
+        border.width: 1
+        border.color: constants.anonBorder
+
+        layer.enabled: true
+        layer.effect: DropShadow {
+            radius: 12
+            samples: 25
+            color: Qt.rgba(0.09, 0.53, 1, 0.15)
+            verticalOffset: 2
+        }
 
         GridLayout {
             id: balanceLayout
             columns: 3
+            anchors.fill: parent
             opacity: Daemon.currentWallet.synchronizing || !Network.isConnected ? 0 : 1
 
             Label {
-                font.pixelSize: constants.fontSizeXLarge
-                text: qsTr('Balance') + ':'
-                color: Material.accentColor
+                font.pixelSize: constants.fontSizeSmall
+                text: qsTr('TOTAL BALANCE')
+                color: constants.anonTextSecondary
+                font.bold: true
+                letterSpacing: 1.5
             }
 
+            Item { Layout.fillWidth: true }
+
+            Item { Layout.preferredWidth: 1 }
+
             Label {
-                Layout.alignment: Qt.AlignRight
-                font.pixelSize: constants.fontSizeXLarge
+                Layout.columnSpan: 2
+                Layout.alignment: Qt.AlignLeft
+                font.pixelSize: constants.fontSizeXXLarge
                 font.family: FixedFont
+                font.bold: true
                 text: formattedTotalBalance
+                color: constants.anonTextPrimary
             }
             Label {
-                font.pixelSize: constants.fontSizeXLarge
-                color: Material.accentColor
+                font.pixelSize: constants.fontSizeLarge
+                color: constants.anonAccent
+                font.bold: true
                 text: Config.baseUnit
             }
 
@@ -56,22 +86,30 @@ Item {
                 Layout.preferredWidth: 1
             }
             Label {
-                Layout.alignment: Qt.AlignRight
+                Layout.columnSpan: 2
+                Layout.alignment: Qt.AlignLeft
                 visible: Daemon.fx.enabled
-                font.pixelSize: constants.fontSizeLarge
+                font.pixelSize: constants.fontSizeMedium
                 font.family: FixedFont
-                color: constants.mutedForeground
-                text: formattedTotalBalanceFiat
+                color: constants.anonTextSecondary
+                text: formattedTotalBalanceFiat + ' ' + Daemon.fx.fiatCurrency
             }
-            Label {
+            Item {
                 visible: Daemon.fx.enabled
-                font.pixelSize: constants.fontSizeLarge
-                color: constants.mutedForeground
-                text: Daemon.fx.fiatCurrency
+                Layout.preferredWidth: 1
+            }
+
+            Rectangle {
+                Layout.columnSpan: 3
+                Layout.fillWidth: true
+                Layout.preferredHeight: 1
+                Layout.topMargin: constants.paddingMedium
+                Layout.bottomMargin: constants.paddingMedium
+                color: constants.anonBorder
             }
 
             RowLayout {
-                Layout.alignment: Qt.AlignRight
+                Layout.columnSpan: 3
                 visible: Daemon.currentWallet.isLightning
                 Image {
                     Layout.preferredWidth: constants.iconSizeSmall
@@ -79,26 +117,27 @@ Item {
                     source: '../../../icons/lightning.png'
                 }
                 Label {
-                    text: qsTr('Lightning') + ':'
+                    text: qsTr('Lightning')
                     font.pixelSize: constants.fontSizeSmall
-                    color: Material.accentColor
+                    color: constants.anonTextSecondary
                 }
-            }
-            Label {
-                visible: Daemon.currentWallet.isLightning
-                Layout.alignment: Qt.AlignRight
-                text: formattedLightningBalance
-                font.family: FixedFont
-            }
-            Label {
-                visible: Daemon.currentWallet.isLightning
-                font.pixelSize: constants.fontSizeSmall
-                color: Material.accentColor
-                text: Config.baseUnit
+                Item { Layout.fillWidth: true }
+                Label {
+                    Layout.alignment: Qt.AlignRight
+                    text: formattedLightningBalance
+                    font.family: FixedFont
+                    font.pixelSize: constants.fontSizeSmall
+                    color: constants.anonTextPrimary
+                }
+                Label {
+                    font.pixelSize: constants.fontSizeSmall
+                    color: constants.anonTextSecondary
+                    text: Config.baseUnit
+                }
             }
 
             RowLayout {
-                Layout.alignment: Qt.AlignRight
+                Layout.columnSpan: 3
                 visible: Daemon.currentWallet.isLightning
                 Image {
                     Layout.preferredWidth: constants.iconSizeSmall
@@ -106,23 +145,24 @@ Item {
                     source: '../../../icons/bitcoin.png'
                 }
                 Label {
-                    text: qsTr('On-chain') + ':'
+                    text: qsTr('On-chain')
                     font.pixelSize: constants.fontSizeSmall
-                    color: Material.accentColor
+                    color: constants.anonTextSecondary
                 }
-            }
-            Label {
-                id: formattedConfirmedBalanceLabel
-                visible: Daemon.currentWallet.isLightning
-                Layout.alignment: Qt.AlignRight
-                text: formattedConfirmedBalance
-                font.family: FixedFont
-            }
-            Label {
-                visible: Daemon.currentWallet.isLightning
-                font.pixelSize: constants.fontSizeSmall
-                color: Material.accentColor
-                text: Config.baseUnit
+                Item { Layout.fillWidth: true }
+                Label {
+                    id: formattedConfirmedBalanceLabel
+                    Layout.alignment: Qt.AlignRight
+                    text: formattedConfirmedBalance
+                    font.family: FixedFont
+                    font.pixelSize: constants.fontSizeSmall
+                    color: constants.anonTextPrimary
+                }
+                Label {
+                    font.pixelSize: constants.fontSizeSmall
+                    color: constants.anonTextSecondary
+                    text: Config.baseUnit
+                }
             }
         }
 
@@ -132,7 +172,7 @@ Item {
         opacity: Daemon.currentWallet.synchronizing && Network.isConnected ? 1 : 0
         anchors.centerIn: balancePane
         text: Daemon.currentWallet.synchronizingProgress
-        color: Material.accentColor
+        color: constants.anonAccent
         font.pixelSize: constants.fontSizeLarge
     }
 
@@ -140,7 +180,7 @@ Item {
         opacity: !Network.isConnected ? 1 : 0
         anchors.centerIn: balancePane
         text: Network.serverStatus
-        color: Material.accentColor
+        color: constants.anonAccent
         font.pixelSize: constants.fontSizeLarge
     }
 
