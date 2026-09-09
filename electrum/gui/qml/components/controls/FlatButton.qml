@@ -12,6 +12,7 @@ TabButton {
     property bool pressAndHoldIndicator: false
 
     font.pixelSize: constants.fontSizeSmall
+    font.bold: true
     icon.width: constants.iconSizeMedium
     icon.height: constants.iconSizeMedium
     display: textUnderIcon ? IconLabel.TextUnderIcon : IconLabel.TextBesideIcon
@@ -24,7 +25,18 @@ TabButton {
         icon: control.icon
         text: control.text
         font: control.font
-        color: !control.enabled ? control.Material.hintTextColor : control.down || control.checked ? control.Material.accentColor : control.Material.foreground
+        color: !control.enabled 
+            ? constants.anonDisabled 
+            : control.down || control.checked 
+                ? constants.anonAccent 
+                : constants.anonTextPrimary
+    }
+
+    background: Rectangle {
+        color: control.down 
+            ? constants.anonHoverBackground 
+            : "transparent"
+        radius: constants.paddingSmall
     }
 
     Rectangle {
@@ -33,8 +45,9 @@ TabButton {
         anchors.horizontalCenter: control.horizontalCenter
         width: 0
         opacity: 0
-        height: 3
-        color: control.Material.accentColor
+        height: 2
+        radius: 1
+        color: constants.anonAccent
 
         states: State {
             name: 'pressing'
