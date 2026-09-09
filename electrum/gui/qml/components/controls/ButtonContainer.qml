@@ -7,7 +7,7 @@ Container {
     id: root
 
     property bool showSeparator: true
-    property color separatorColor: constants.darkerBackground
+    property color separatorColor: constants.anonBorder
     property Component headerComponent: null
 
     property var _contentRootItem
@@ -15,7 +15,9 @@ Container {
     property Item _layout
 
     background: Rectangle {
-        color: constants.highlightBackground
+        color: constants.anonCardBackground
+        border.width: 1
+        border.color: constants.anonBorder
     }
 
     function fillContentItem() {
@@ -75,7 +77,7 @@ Container {
             required property int pheight
             required property int master_idx
             Layout.fillWidth: false
-            Layout.preferredWidth: showSeparator ? 2 : 0
+            Layout.preferredWidth: showSeparator ? 1 : 0
             Layout.preferredHeight: pheight
             Layout.alignment: Qt.AlignVCenter
             color: root.separatorColor
@@ -93,4 +95,3 @@ Container {
     }
 
 }
-
