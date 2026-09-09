@@ -177,7 +177,7 @@ class QEAppController(BaseCrashReporter, QObject):
             global notification
             if not notification:
                 from plyer import notification
-            notification.notify('Electrum', message, app_icon=icon, app_name='Electrum')
+            notification.notify('Anon Flash', message, app_icon=icon, app_name='Anon Flash')
         except ImportError:
             self.logger.warning('Notification: needs plyer; `python3 -m pip install plyer`')
         except Exception as e:
@@ -508,7 +508,7 @@ class ElectrumQmlApplication(QGuiApplication):
         qmlRegisterType(QETxCpfpFeeBumper, 'org.electrum', 1, 0, 'TxCpfpFeeBumper')
         qmlRegisterType(QETxCanceller, 'org.electrum', 1, 0, 'TxCanceller')
         qmlRegisterType(QETxSweepFinalizer, 'org.electrum', 1, 0, 'SweepFinalizer')
-        qmlRegisterType(QEBip39RecoveryListModel, 'org.electrum', 1, 0, 'Bip39RecoveryListModel')
+                 qmlRegisterType(QEBip39RecoveryListModel, 'org.electrum', 1, 0, 'Bip39RecoveryListModel')
         qmlRegisterType(FeeSlider, 'org.electrum', 1, 0, 'FeeSlider')
         # TODO QT6: these were declared as uncreatable, but that doesn't seem to work for pyqt6
         # qmlRegisterUncreatableType(QEAmount, 'org.electrum', 1, 0, 'Amount', 'Amount can only be used as property')
