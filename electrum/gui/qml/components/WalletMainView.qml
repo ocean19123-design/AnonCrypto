@@ -290,42 +290,47 @@ Item {
         }
 
         ButtonContainer {
-            id: buttonContainer
-            Layout.fillWidth: true
+    id: buttonContainer
+    Layout.fillWidth: true
+    Layout.margins: constants.paddingLarge
 
-            FlatButton {
-                id: receiveButton
-                Layout.fillWidth: true
-                Layout.preferredWidth: 1
-                icon.source: '../../icons/tab_receive.png'
-                text: qsTr('Receive')
-                onClicked: {
-                    var dialog = receiveDetailsDialog.createObject(mainView)
-                    dialog.open()
-                }
-                pressAndHoldIndicator: true
-                onPressAndHold: {
-                    Config.userKnowsPressAndHold = true
-                    Daemon.currentWallet.deleteExpiredRequests()
-                    app.stack.push(Qt.resolvedUrl('ReceiveRequests.qml'))
-                    AppController.haptic()
-                }
-            }
-            FlatButton {
-                Layout.fillWidth: true
-                Layout.preferredWidth: 1
-                icon.source: '../../icons/tab_send.png'
-                text: qsTr('Send')
-                enabled: !invoiceParser.busy && !piResolver.busy && !requestDetails.busy
-                onClicked: openSendDialog()
-                pressAndHoldIndicator: true
-                onPressAndHold: {
-                    Config.userKnowsPressAndHold = true
-                    app.stack.push(Qt.resolvedUrl('Invoices.qml'))
-                    AppController.haptic()
-                }
-            }
+    FlatButton {
+        id: receiveButton
+        Layout.fillWidth: true
+        Layout.preferredWidth: 1
+        Layout.preferredHeight: constants.paddingXXLarge * 2
+        icon.source: '../../icons/tab_receive.png'
+        icon.color: constants.anonPositive
+        text: qsTr('Receive')
+        onClicked: {
+            var dialog = receiveDetailsDialog.createObject(mainView)
+            dialog.open()
         }
+        pressAndHoldIndicator: true
+        onPressAndHold: {
+            Config.userKnowsPressAndHold = true
+            Daemon.currentWallet.deleteExpiredRequests()
+            app.stack.push(Qt.resolvedUrl('ReceiveRequests.qml'))
+            AppController.haptic()
+        }
+    }
+    FlatButton {
+        Layout.fillWidth: true
+        Layout.preferredWidth: 1
+        Layout.preferredHeight: constants.paddingXXLarge * 2
+        icon.source: '../../icons/tab_send.png'
+        icon.color: constants.anonAccent
+        text: qsTr('Send')
+        enabled: !invoiceParser.busy && !piResolver.busy && !requestDetails.busy
+        onClicked: openSendDialog()
+        pressAndHoldIndicator: true
+        onPressAndHold: {
+            Config.userKnowsPressAndHold = true
+            app.stack.push(Qt.resolvedUrl('Invoices.qml'))
+            AppController.haptic()
+        }
+    }
+}
     }
     property color navigationBarBackgroundColor: constants.highlightBackground
 
@@ -573,7 +578,7 @@ Item {
 
             Connections {
                 target: Daemon.currentWallet
-                function onSaveTxSuccess(txid) {
+                           function onSaveTxSuccess(txid) {
                     _invoiceDialog.close()
                 }
             }
@@ -780,4 +785,3 @@ Item {
         }
     }
 }
-
