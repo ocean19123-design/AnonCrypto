@@ -14,8 +14,8 @@ Pane {
     padding: 0
     clip: true
 
-    background: PaneInsetBackground {
-        vertical: false
+    background: Rectangle {
+        color: constants.anonBackground
     }
 
     ElListView {
@@ -63,8 +63,11 @@ Pane {
                 text: listview.sectionLabels[section]
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: constants.paddingLarge
-                font.pixelSize: constants.fontSizeMedium
-                color: Material.accentColor
+                Layout.bottomMargin: constants.paddingSmall
+                font.pixelSize: constants.fontSizeSmall
+                font.bold: true
+                color: constants.anonTextSecondary
+                opacity: 0.8
             }
         }
 
@@ -89,9 +92,9 @@ Pane {
             visible: Daemon.currentWallet.historyModel.count == 0 && !Daemon.currentWallet.synchronizing
             anchors.centerIn: parent
             width: listview.width * 4/5
-            font.pixelSize: constants.fontSizeXXLarge
-            color: constants.mutedForeground
-            text: qsTr('No transactions in this wallet yet')
+            font.pixelSize: constants.fontSizeLarge
+            color: constants.anonTextSecondary
+            text: qsTr('No transactions yet')
             wrapMode: Text.Wrap
             horizontalAlignment: Text.AlignHCenter
         }
@@ -118,8 +121,8 @@ Pane {
         height: postext.height + constants.paddingXXLarge
         radius: constants.paddingXSmall
 
-        color: constants.colorAlpha(Material.accentColor, 0.33)
-        border.color: Material.accentColor
+        color: constants.colorAlpha(constants.anonAccent, 0.33)
+        border.color: constants.anonAccent
         opacity : vdragscroll.drag.active ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 300 } }
 
