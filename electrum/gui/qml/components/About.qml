@@ -6,7 +6,7 @@ import QtQuick.Controls.Material
 Pane {
     objectName: 'About'
 
-    property string title: qsTr("About Electrum")
+    property string title: qsTr("About Anon Flash")
 
     Flickable {
         anchors.fill: parent
@@ -21,14 +21,25 @@ Pane {
             Item {
                 Layout.columnSpan: 2
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: parent.width
-                Layout.preferredHeight: parent.width * 3/4 // reduce height, empty space in png
+                Layout.preferredWidth: parent.width * 0.4
+                Layout.preferredHeight: parent.width * 0.4
 
-                Image {
-                    id: electrum_logo
+                Rectangle {
+                    anchors.centerIn: parent
                     width: parent.width
                     height: width
-                    source: '../../icons/electrum_presplash.png'
+                    radius: width / 2
+                    color: constants.accentColor
+                    border.width: 2
+                    border.color: Qt.lighter(constants.accentColor, 1.3)
+
+                    Label {
+                        anchors.centerIn: parent
+                        text: "AF"
+                        font.pixelSize: parent.width * 0.35
+                        font.bold: true
+                        color: "white"
+                    }
                 }
             }
 
@@ -67,33 +78,16 @@ Pane {
             Label {
                 text: qsTr('MIT License')
             }
-            Label {
-                text: qsTr('Homepage')
-                Layout.alignment: Qt.AlignRight
-            }
-            Label {
-                text: '<a href="https://electrum.org">https://electrum.org</a>'
-                textFormat: Text.RichText
-                onLinkActivated: Qt.openUrlExternally(link)
-            }
-            Label {
-                text: qsTr('Developers')
-                Layout.alignment: Qt.AlignRight
-            }
-            Label {
-                text: 'Thomas Voegtlin\nSomberNight\nSander van Grieken\nFelix B.'
-            }
             Item {
                 width: 1
                 height: constants.paddingXLarge
                 Layout.columnSpan: 2
             }
             Label {
-                text: qsTr('Distributed by Electrum Technologies GmbH')
+                text: qsTr('Anon Flash - Fast. Private. Bitcoin.')
                 Layout.columnSpan: 2
                 Layout.alignment: Qt.AlignHCenter
             }
         }
     }
-
 }
