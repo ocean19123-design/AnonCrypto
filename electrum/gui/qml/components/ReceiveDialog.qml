@@ -59,16 +59,26 @@ ElDialog {
                         Rectangle {
                             id: qrbg
                             Layout.alignment: Qt.AlignHCenter
-                            Layout.topMargin: constants.paddingSmall
-                            Layout.bottomMargin: constants.paddingSmall
+                            Layout.topMargin: constants.paddingMedium
+                            Layout.bottomMargin: constants.paddingMedium
 
-                            Layout.preferredWidth: dialog.width * 7/8
-                            Layout.preferredHeight: dialog.width * 7/8
+                            Layout.preferredWidth: dialog.width * 3/4
+                            Layout.preferredHeight: dialog.width * 3/4
 
+                            radius: constants.paddingLarge
                             color: 'white'
+
+                            layer.enabled: true
+                            layer.effect: DropShadow {
+                                radius: 10
+                                samples: 20
+                                color: Qt.rgba(0.09, 0.53, 1, 0.2)
+                                verticalOffset: 2
+                            }
 
                             QRImage {
                                 anchors.centerIn: parent
+                                anchors.margins: constants.paddingLarge
                                 qrdata: _bolt11
                                     ? _bolt11
                                     : _bip21uri
@@ -85,7 +95,7 @@ ElDialog {
                     height: 1
                     Layout.alignment: Qt.AlignHCenter
                     Layout.preferredWidth: qrbg.width
-                    color: Material.accentColor
+                    color: constants.anonBorder
                 }
 
                 GridLayout {
@@ -95,30 +105,35 @@ ElDialog {
 
                     Label {
                         text: qsTr('Status')
-                        color: Material.accentColor
+                        color: constants.anonTextSecondary
+                        font.bold: true
                     }
                     Label {
                         text: request.status_str
+                        color: constants.anonTextPrimary
                     }
                     Label {
                         text: qsTr('Message')
-                        color: Material.accentColor
+                        color: constants.anonTextSecondary
+                        font.bold: true
                     }
                     Label {
                         visible: request.message
                         Layout.fillWidth: true
                         text: request.message
                         wrapMode: Text.Wrap
+                        color: constants.anonTextPrimary
                     }
                     Label {
                         visible: !request.message
                         Layout.fillWidth: true
                         text: qsTr('unspecified')
-                        color: constants.mutedForeground
+                        color: constants.anonTextSecondary
                     }
                     Label {
                         text: qsTr('Amount')
-                        color: Material.accentColor
+                        color: constants.anonTextSecondary
+                        font.bold: true
                     }
                     FormattedAmount {
                         visible: !request.amount.isEmpty
@@ -128,7 +143,7 @@ ElDialog {
                     Label {
                         visible: request.amount.isEmpty
                         text: qsTr('unspecified')
-                        color: constants.mutedForeground
+                        color: constants.anonTextSecondary
                     }
                 }
 
@@ -136,7 +151,7 @@ ElDialog {
                     height: 1
                     Layout.alignment: Qt.AlignHCenter
                     Layout.preferredWidth: qrbg.width
-                    color: Material.accentColor
+                    color: constants.anonBorder
                 }
 
             }
@@ -150,9 +165,10 @@ ElDialog {
             FlatButton {
                 Layout.fillWidth: true
                 Layout.preferredWidth: 1
+                Layout.preferredHeight: constants.paddingXXLarge * 2
 
                 icon.source: '../../icons/copy_bw.png'
-                icon.color: 'transparent'
+                icon.color: constants.anonAccent
                 text: 'Copy'
                 onClicked: {
                     AppController.textToClipboard(_bolt11
@@ -167,8 +183,10 @@ ElDialog {
             FlatButton {
                 Layout.fillWidth: true
                 Layout.preferredWidth: 1
+                Layout.preferredHeight: constants.paddingXXLarge * 2
 
                 icon.source: '../../icons/share.png'
+                icon.color: constants.anonAccent
                 text: 'Share'
                 onClicked: {
                     enabled = false
