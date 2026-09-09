@@ -55,7 +55,7 @@ Pane {
                                 if (Config.language != currentValue) {
                                     Config.language = currentValue
                                     var dialog = app.messageDialog.createObject(app, {
-                                        text: qsTr('Please restart Electrum to activate the new GUI settings')
+                                        text: qsTr('Please restart Anon Flash to activate the new GUI settings')
                                     })
                                     dialog.open()
                                 }
@@ -407,7 +407,7 @@ Pane {
                                     if (!checked) {
                                         var dialog = app.messageDialog.createObject(app, {
                                             title: qsTr('Are you sure?'),
-                                            text: qsTr('Electrum will have to download the Lightning Network graph, which is not recommended on mobile.'),
+                                            text: qsTr('Anon Flash will have to download the Lightning Network graph, which is not recommended on mobile.'),
                                             yesno: true
                                         })
                                         dialog.accepted.connect(function() {
@@ -511,4 +511,4 @@ Pane {
         syncLabels.checked = AppController.isPluginEnabled('labels')
         psbtNostr.checked = AppController.isPluginEnabled('psbt_nostr')
     }
-}
+}  
