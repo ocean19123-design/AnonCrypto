@@ -68,77 +68,116 @@ ElDialog {
                     id: amountLabel
                     Layout.columnSpan: 2
                     text: qsTr('Amount to send')
-                    color: Material.accentColor
+                    color: constants.anonTextSecondary
+                    font.bold: true
+                    font.pixelSize: constants.fontSizeSmall
                 }
 
-                DialogHighlightPane {
+                Rectangle {
                     Layout.columnSpan: 2
                     Layout.fillWidth: true
-                    GridLayout {
-                        columns: 2
-                        Label {
-                            id: btcValue
-                            Layout.alignment: Qt.AlignRight
-                            font.pixelSize: constants.fontSizeXLarge
-                            font.family: FixedFont
-                            font.bold: true
-                        }
+                    Layout.preferredHeight: amountPane.height
+                    radius: constants.paddingLarge
+                    color: constants.anonCardBackground
+                    border.width: 1
+                    border.color: constants.anonBorder
 
-                        Label {
+                    ColumnLayout {
+                        id: amountPane
+                        width: parent.width
+                        spacing: 0
+
+                        Item { Layout.preferredHeight: constants.paddingLarge }
+
+                        RowLayout {
                             Layout.fillWidth: true
-                            text: Config.baseUnit
-                            color: Material.accentColor
-                            font.pixelSize: constants.fontSizeXLarge
+                            Layout.leftMargin: constants.paddingLarge
+                            Layout.rightMargin: constants.paddingLarge
+                            spacing: constants.paddingSmall
+
+                            Label {
+                                id: btcValue
+                                Layout.alignment: Qt.AlignRight
+                                font.pixelSize: constants.fontSizeXXLarge
+                                font.family: FixedFont
+                                font.bold: true
+                                color: constants.anonTextPrimary
+                            }
+
+                            Label {
+                                Layout.fillWidth: true
+                                text: Config.baseUnit
+                                color: constants.anonAccent
+                                font.pixelSize: constants.fontSizeLarge
+                                font.bold: true
+                                Layout.alignment: Qt.AlignBottom
+                            }
                         }
 
-                        Label {
-                            id: fiatValue
-                            Layout.alignment: Qt.AlignRight
-                            visible: Daemon.fx.enabled
-                            font.pixelSize: constants.fontSizeMedium
-                            color: constants.mutedForeground
-                        }
-
-                        Label {
+                        RowLayout {
                             Layout.fillWidth: true
+                            Layout.leftMargin: constants.paddingLarge
+                            Layout.rightMargin: constants.paddingLarge
+                            Layout.bottomMargin: constants.paddingLarge
                             visible: Daemon.fx.enabled
-                            text: Daemon.fx.fiatCurrency
-                            font.pixelSize: constants.fontSizeMedium
-                            color: constants.mutedForeground
+                            spacing: constants.paddingSmall
+
+                            Label {
+                                id: fiatValue
+                                Layout.alignment: Qt.AlignRight
+                                font.pixelSize: constants.fontSizeMedium
+                                color: constants.anonTextSecondary
+                            }
+
+                            Label {
+                                Layout.fillWidth: true
+                                text: Daemon.fx.fiatCurrency
+                                font.pixelSize: constants.fontSizeMedium
+                                color: constants.anonTextSecondary
+                            }
                         }
-                        Component.onCompleted: updateAmountText()
-                        Connections {
-                            target: finalizer
-                            function onEffectiveAmountChanged() {
-                                updateAmountText()
-                            }
-                            function onValidChanged() {
-                                updateAmountText()
-                            }
+                    }
+
+                    Component.onCompleted: updateAmountText()
+                    Connections {
+                        target: finalizer
+                        function onEffectiveAmountChanged() {
+                            updateAmountText()
+                        }
+                        function onValidChanged() {
+                            updateAmountText()
                         }
                     }
                 }
 
                 Label {
                     Layout.columnSpan: 2
+                    Layout.topMargin: constants.paddingMedium
                     text: qsTr('Fee')
-                    color: Material.accentColor
+                    color: constants.anonTextSecondary
+                    font.bold: true
+                    font.pixelSize: constants.fontSizeSmall
                 }
 
-                DialogHighlightPane {
+                Rectangle {
                     Layout.columnSpan: 2
                     Layout.fillWidth: true
-                    height: feepicker.height
+                    Layout.preferredHeight: feepicker.height + constants.paddingLarge * 2
+                    radius: constants.paddingLarge
+                    color: constants.anonCardBackground
+                    border.width: 1
+                    border.color: constants.anonBorder
 
                     FeePicker {
                         id: feepicker
-                        width: parent.width
+                        anchors.centerIn: parent
+                        width: parent.width - constants.paddingLarge * 2
                         finalizer: dialog.finalizer
 
                         Label {
                             visible: !finalizer.extraFee.isEmpty
                             text: qsTr('Extra fee')
-                            color: Material.accentColor
+                            color: constants.anonTextSecondary
                         }
 
                         FormattedAmount {
@@ -151,20 +190,26 @@ ElDialog {
                 ToggleLabel {
                     id: optionstoggle
                     Layout.columnSpan: 2
+                    Layout.topMargin: constants.paddingMedium
                     labelText: qsTr('Options')
-                    color: Material.accentColor
+                    color: constants.anonAccent
                     visible: showOptions
                 }
 
-                DialogHighlightPane {
+                Rectangle {
                     Layout.columnSpan: 2
                     Layout.fillWidth: true
+                    Layout.preferredHeight: optionslayout.height + constants.paddingLarge * 2
+                    radius: constants.paddingLarge
+                    color: constants.anonCardBackground
+                    border.width: 1
+                    border.color: constants.anonBorder
                     visible: optionstoggle.visible && !optionstoggle.collapsed
-                    height: optionslayout.height
 
                     GridLayout {
                         id: optionslayout
-                        width: parent.width
+                        anchors.centerIn: parent
+                        width: parent.width - constants.paddingLarge * 2
                         columns: 2
 
                         ElCheckBox {
@@ -217,7 +262,7 @@ ElDialog {
                     visible: finalizer.warning != ''
                     text: finalizer.warning
                     iconStyle: InfoTextArea.IconStyle.Warn
-                    backgroundColor: constants.darkerDialogBackground
+                    backgroundColor: constants.anonCardBackground
                 }
 
                 ToggleLabel {
@@ -227,7 +272,7 @@ ElDialog {
                     visible: finalizer.valid
 
                     labelText: qsTr('Inputs (%1)').arg(finalizer.inputs.length)
-                    color: Material.accentColor
+                    color: constants.anonAccent
                 }
 
                 Repeater {
@@ -238,7 +283,7 @@ ElDialog {
                         Layout.columnSpan: 2
                         Layout.fillWidth: true
                         visible: finalizer.valid
-                        backgroundColor: constants.darkerDialogBackground
+                        backgroundColor: constants.anonCardBackground
 
                         idx: index
                         model: modelData
@@ -252,7 +297,7 @@ ElDialog {
                     visible: finalizer.valid
 
                     labelText: qsTr('Outputs (%1)').arg(finalizer.outputs.length)
-                    color: Material.accentColor
+                    color: constants.anonAccent
                 }
 
                 Repeater {
@@ -263,7 +308,7 @@ ElDialog {
                         Layout.columnSpan: 2
                         Layout.fillWidth: true
                         visible: finalizer.valid
-                        backgroundColor: constants.darkerDialogBackground
+                        backgroundColor: constants.anonCardBackground
 
                         allowShare: false
                         allowClickAddress: false
@@ -282,10 +327,12 @@ ElDialog {
             FlatButton {
                 id: sendButton
                 Layout.fillWidth: true
+                Layout.preferredHeight: constants.paddingXXLarge * 2
                 text: (Daemon.currentWallet.isWatchOnly || !Daemon.currentWallet.canSignWithoutCosigner)
                         ? qsTr('Finalize...')
                         : qsTr('Pay...')
                 icon.source: '../../icons/confirmed.png'
+                icon.color: constants.anonAccent
                 enabled: finalizer.valid
                 onClicked: doAccept()
             }
