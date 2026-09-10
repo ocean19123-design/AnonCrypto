@@ -476,39 +476,4 @@ Pane {
                         spacing: 0
                         Switch {
                             id: enableDebugLogs
-                            onCheckedChanged: {
-                                if (activeFocus)
-                                    Config.enableDebugLogs = checked
-                            }
-                            enabled: Config.canToggleDebugLogs
-                        }
-                        Label {
-                            Layout.fillWidth: true
-                            text: qsTr('Enable debug logs (for developers)')
-                            wrapMode: Text.Wrap
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    Component.onCompleted: {
-        language.currentIndex = language.indexOfValue(Config.language)
-        baseUnit.currentIndex = _baseunits.indexOf(Config.baseUnit)
-        thousands.checked = Config.thousandsSeparator
-        currencies.currentIndex = currencies.indexOfValue(Daemon.fx.fiatCurrency)
-        historicRates.checked = Daemon.fx.historicRates
-        rateSources.currentIndex = rateSources.indexOfValue(Daemon.fx.rateSource)
-        fiatEnable.checked = Daemon.fx.enabled
-        spendUnconfirmed.checked = Config.spendUnconfirmed
-        freezeReusedAddressUtxos.checked = Config.freezeReusedAddressUtxos
-        useTrampolineRouting.checked = !Config.useGossip
-        enableDebugLogs.checked = Config.enableDebugLogs
-        disableScreenshots.checked = !Config.alwaysAllowScreenshots && AppController.isAndroid()
-        setMaxBrightnessOnQrDisplay.checked = Config.setMaxBrightnessOnQrDisplay && AppController.isAndroid()
-        useRecoverableChannels.checked = Config.useRecoverableChannels
-        syncLabels.checked = AppController.isPluginEnabled('labels')
-        psbtNostr.checked = AppController.isPluginEnabled('psbt_nostr')
-    }
-}  
+                              
