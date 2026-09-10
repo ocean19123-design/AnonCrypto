@@ -3,14 +3,16 @@ import QtQuick.Layouts
 
 ButtonContainer {
     id: root
-    separatorColor: constants.darkerDialogBackground
+    separatorColor: constants.anonBorder
     background: Rectangle {
-        color: "transparent"
+        color: constants.anonCardBackground
+        border.width: 1
+        border.color: constants.anonBorder
     }
     headerComponent: Component {
         Rectangle {
             Layout.fillWidth: true
-            Layout.preferredHeight: 2
+            Layout.preferredHeight: 1
             Layout.leftMargin: constants.paddingSmall
             Layout.rightMargin: constants.paddingSmall
             color: root.separatorColor
