@@ -69,7 +69,7 @@ ElDialog {
                                                 ? InfoTextArea.IconStyle.Warn
                                                 : InfoTextArea.IconStyle.Error
                                         : InfoTextArea.IconStyle.Info
-                    backgroundColor: constants.darkerDialogBackground
+                    backgroundColor: constants.anonCardBackground
                 }
 
                 Label {
@@ -77,27 +77,36 @@ ElDialog {
                     Layout.topMargin: constants.paddingSmall
                     visible: invoice.invoiceType == Invoice.OnchainInvoice
                     text: qsTr('Address')
-                    color: Material.accentColor
+                    color: constants.anonTextSecondary
+                    font.bold: true
+                    font.pixelSize: constants.fontSizeSmall
                 }
 
-                DialogHighlightPane {
+                Rectangle {
                     Layout.columnSpan: 2
                     Layout.fillWidth: true
                     visible: invoice.invoiceType == Invoice.OnchainInvoice
-                    leftPadding: constants.paddingMedium
+                    Layout.preferredHeight: addressLayout.height + constants.paddingLarge * 2
+                    radius: constants.paddingLarge
+                    color: constants.anonCardBackground
+                    border.width: 1
+                    border.color: constants.anonBorder
 
                     RowLayout {
-                        width: parent.width
+                        id: addressLayout
+                        anchors.centerIn: parent
+                        width: parent.width - constants.paddingLarge * 2
                         Label {
                             text: invoice.address
-                            font.pixelSize: constants.fontSizeLarge
+                            font.pixelSize: constants.fontSizeMedium
                             font.family: FixedFont
+                            color: constants.anonTextPrimary
                             Layout.fillWidth: true
                             wrapMode: Text.Wrap
                         }
                         ToolButton {
                             icon.source: '../../icons/share.png'
-                            icon.color: 'transparent'
+                            icon.color: constants.anonAccent
                             onClicked: {
                                 var dialog = app.genericShareDialog.createObject(app, {
                                     title: qsTr('Address'),
@@ -114,20 +123,28 @@ ElDialog {
                     Layout.topMargin: constants.paddingSmall
                     text: qsTr('Description')
                     visible: invoice.message
-                    color: Material.accentColor
+                    color: constants.anonTextSecondary
+                    font.bold: true
+                    font.pixelSize: constants.fontSizeSmall
                 }
 
-                DialogHighlightPane {
+                Rectangle {
                     Layout.columnSpan: 2
                     Layout.fillWidth: true
-
                     visible: invoice.message
-                    leftPadding: constants.paddingMedium
+                    Layout.preferredHeight: messageLabel.height + constants.paddingLarge * 2
+                    radius: constants.paddingLarge
+                    color: constants.anonCardBackground
+                    border.width: 1
+                    border.color: constants.anonBorder
 
                     Label {
+                        id: messageLabel
+                        anchors.centerIn: parent
                         text: invoice.message
-                        width: parent.width
-                        font.pixelSize: constants.fontSizeXLarge
+                        width: parent.width - constants.paddingLarge * 2
+                        font.pixelSize: constants.fontSizeLarge
+                        color: constants.anonTextPrimary
                         wrapMode: Text.Wrap
                         elide: Text.ElideRight
                     }
@@ -135,26 +152,32 @@ ElDialog {
 
                 Label {
                     Layout.columnSpan: 2
-                    Layout.topMargin: constants.paddingSmall
+                    Layout.topMargin: constants.paddingMedium
                     text: qsTr('Amount to send')
-                    color: Material.accentColor
+                    color: constants.anonTextSecondary
+                    font.bold: true
+                    font.pixelSize: constants.fontSizeSmall
                 }
 
-                DialogHighlightPane {
+                Rectangle {
                     id: amountContainer
 
                     Layout.columnSpan: 2
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
+                    Layout.preferredHeight: amountLayout.height + constants.paddingXLarge * 2
 
-                    leftPadding: constants.paddingXLarge
-                    rightPadding: constants.paddingXLarge
+                    radius: constants.paddingLarge
+                    color: constants.anonCardBackground
+                    border.width: 1
+                    border.color: constants.anonBorder
 
                     property bool editmode: false
 
                     RowLayout {
                         id: amountLayout
-                        width: parent.width
+                        anchors.centerIn: parent
+                        width: parent.width - constants.paddingXLarge * 2
 
                         GridLayout {
                             visible: !amountContainer.editmode
@@ -166,6 +189,7 @@ ElDialog {
                                 visible: _invoice_amount.isMax
                                 font.pixelSize: constants.fontSizeXLarge
                                 font.bold: true
+                                color: constants.anonTextPrimary
                                 text: qsTr('All on-chain funds')
                             }
 
@@ -174,16 +198,17 @@ ElDialog {
                                 Layout.fillWidth: true
                                 visible: _invoice_amount.isEmpty
                                 font.pixelSize: constants.fontSizeXLarge
-                                color: constants.mutedForeground
+                                color: constants.anonTextSecondary
                                 text: qsTr('not specified')
                             }
 
                             Label {
                                 Layout.alignment: Qt.AlignRight
                                 visible: !_invoice_amount.isMax && !_invoice_amount.isEmpty
-                                font.pixelSize: constants.fontSizeXLarge
+                                font.pixelSize: constants.fontSizeXXLarge
                                 font.family: FixedFont
                                 font.bold: true
+                                color: constants.anonTextPrimary
                                 text: invoice.invoiceType == Invoice.LightningInvoice
                                     ? Config.formatMilliSats(invoice.amount, false)
                                     : Config.formatSats(invoice.amount, false)
@@ -193,8 +218,9 @@ ElDialog {
                                 Layout.fillWidth: true
                                 visible: !_invoice_amount.isMax && !_invoice_amount.isEmpty
                                 text: Config.baseUnit
-                                color: Material.accentColor
-                                font.pixelSize: constants.fontSizeXLarge
+                                color: constants.anonAccent
+                                font.pixelSize: constants.fontSizeLarge
+                                font.bold: true
                             }
 
                             Label {
@@ -202,7 +228,7 @@ ElDialog {
                                 Layout.alignment: Qt.AlignRight
                                 visible: Daemon.fx.enabled && !_invoice_amount.isMax && !_invoice_amount.isEmpty
                                 font.pixelSize: constants.fontSizeMedium
-                                color: constants.mutedForeground
+                                color: constants.anonTextSecondary
                             }
 
                             Label {
@@ -210,7 +236,7 @@ ElDialog {
                                 visible: Daemon.fx.enabled && !_invoice_amount.isMax && !_invoice_amount.isEmpty
                                 text: Daemon.fx.fiatCurrency
                                 font.pixelSize: constants.fontSizeMedium
-                                color: constants.mutedForeground
+                                color: constants.anonTextSecondary
                             }
 
                         }
@@ -229,8 +255,8 @@ ElDialog {
                                 readOnly: amountMax.checked
                                 msatPrecision: invoice.invoiceType == Invoice.LightningInvoice
                                 color: readOnly
-                                    ? Material.accentColor
-                                    : Material.foreground
+                                    ? constants.anonAccent
+                                    : constants.anonTextPrimary
                                 onTextAsSatsChanged: {
                                     if (!amountMax.checked)
                                         invoice.amountOverride.copyFrom(textAsSats)
@@ -250,7 +276,8 @@ ElDialog {
                                 Layout.columnSpan: amountMax.visible ? 1 : 2
 
                                 text: Config.baseUnit
-                                color: Material.accentColor
+                                color: constants.anonAccent
+                                font.bold: true
                             }
 
                             Switch {
@@ -278,15 +305,16 @@ ElDialog {
                                 visible: Daemon.fx.enabled
                                 readOnly: amountMax.checked
                                 color: readOnly
-                                    ? Material.accentColor
-                                    : Material.foreground
+                                    ? constants.anonAccent
+                                    : constants.anonTextPrimary
                             }
 
                             Label {
                                 Layout.columnSpan: 2
                                 visible: Daemon.fx.enabled
                                 text: Daemon.fx.fiatCurrency
-                                color: Material.accentColor
+                                color: constants.anonAccent
+                                font.bold: true
                             }
 
                             InfoTextArea {
@@ -296,7 +324,7 @@ ElDialog {
                                 id: maxAmountMessage
                                 visible: amountMax.checked && text
                                 compact: true
-                                backgroundColor: constants.darkerDialogBackground
+                                backgroundColor: constants.anonCardBackground
 
                                 Connections {
                                     target: invoice
@@ -312,6 +340,7 @@ ElDialog {
 
                 Heading {
                     Layout.columnSpan: 2
+                    Layout.topMargin: constants.paddingMedium
                     visible: invoice.invoiceType == Invoice.LightningInvoice
                     text: qsTr('Technical properties')
                 }
@@ -321,28 +350,37 @@ ElDialog {
                     Layout.topMargin: constants.paddingSmall
                     visible: invoice.invoiceType == Invoice.LightningInvoice
                     text: qsTr('Recipient Pubkey')
-                    color: Material.accentColor
+                    color: constants.anonTextSecondary
+                    font.bold: true
+                    font.pixelSize: constants.fontSizeSmall
                 }
 
-                DialogHighlightPane {
+                Rectangle {
                     Layout.columnSpan: 2
                     Layout.fillWidth: true
-
                     visible: invoice.invoiceType == Invoice.LightningInvoice
-                    leftPadding: constants.paddingMedium
+                    Layout.preferredHeight: pubkeyLayout.height + constants.paddingLarge * 2
+                    radius: constants.paddingLarge
+                    color: constants.anonCardBackground
+                    border.width: 1
+                    border.color: constants.anonBorder
 
                     RowLayout {
-                        width: parent.width
+                        id: pubkeyLayout
+                        anchors.centerIn: parent
+                        width: parent.width - constants.paddingLarge * 2
                         Label {
                             id: pubkeyLabel
                             Layout.fillWidth: true
                             text: 'pubkey' in invoice.lnprops ? invoice.lnprops.pubkey : ''
                             font.family: FixedFont
+                            font.pixelSize: constants.fontSizeMedium
+                            color: constants.anonTextPrimary
                             wrapMode: Text.Wrap
                         }
                         ToolButton {
                             icon.source: '../../icons/share.png'
-                            icon.color: 'transparent'
+                            icon.color: constants.anonAccent
                             enabled: pubkeyLabel.text
                             onClicked: {
                                 var dialog = app.genericShareDialog.createObject(app,
@@ -359,28 +397,37 @@ ElDialog {
                     Layout.topMargin: constants.paddingSmall
                     visible: invoice.invoiceType == Invoice.LightningInvoice
                     text: qsTr('Payment hash')
-                    color: Material.accentColor
+                    color: constants.anonTextSecondary
+                    font.bold: true
+                    font.pixelSize: constants.fontSizeSmall
                 }
 
-                DialogHighlightPane {
+                Rectangle {
                     Layout.columnSpan: 2
                     Layout.fillWidth: true
-
                     visible: invoice.invoiceType == Invoice.LightningInvoice
-                    leftPadding: constants.paddingMedium
+                    Layout.preferredHeight: paymenthashLayout.height + constants.paddingLarge * 2
+                    radius: constants.paddingLarge
+                    color: constants.anonCardBackground
+                    border.width: 1
+                    border.color: constants.anonBorder
 
                     RowLayout {
-                        width: parent.width
+                        id: paymenthashLayout
+                        anchors.centerIn: parent
+                        width: parent.width - constants.paddingLarge * 2
                         Label {
                             id: paymenthashLabel
                             Layout.fillWidth: true
                             text: 'payment_hash' in invoice.lnprops ? invoice.lnprops.payment_hash : ''
                             font.family: FixedFont
+                            font.pixelSize: constants.fontSizeMedium
+                            color: constants.anonTextPrimary
                             wrapMode: Text.Wrap
                         }
                         ToolButton {
                             icon.source: '../../icons/share.png'
-                            icon.color: 'transparent'
+                            icon.color: constants.anonAccent
                             enabled: paymenthashLabel.text
                             onClicked: {
                                 var dialog = app.genericShareDialog.createObject(app, {
@@ -396,151 +443,4 @@ ElDialog {
                 Label {
                     Layout.columnSpan: 2
                     Layout.topMargin: constants.paddingSmall
-                    visible: 'r' in invoice.lnprops && invoice.lnprops.r.length
-                    text: qsTr('Routing hints')
-                    color: Material.accentColor
-                }
-
-                Repeater {
-                    visible: 'r' in invoice.lnprops && invoice.lnprops.r.length
-                    model: invoice.lnprops.r
-
-                    DialogHighlightPane {
-                        Layout.columnSpan: 2
-                        Layout.fillWidth: true
-
-                        RowLayout {
-                            width: parent.width
-
-                            Label {
-                                text: modelData.scid
-                            }
-                            Label {
-                                Layout.fillWidth: true
-                                text: modelData.node
-                                wrapMode: Text.Wrap
-                            }
-                        }
-                    }
-                }
-
-                Label {
-                    Layout.columnSpan: 2
-                    Layout.topMargin: constants.paddingSmall
-                    visible: invoice.invoiceType == Invoice.LightningInvoice && invoice.address
-                    text: qsTr('Fallback address')
-                    color: Material.accentColor
-                }
-
-                DialogHighlightPane {
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    visible: invoice.invoiceType == Invoice.LightningInvoice && invoice.address
-                    leftPadding: constants.paddingMedium
-
-                    RowLayout {
-                        width: parent.width
-                        Label {
-                            text: invoice.address
-                            font.family: FixedFont
-                            Layout.fillWidth: true
-                            wrapMode: Text.Wrap
-                        }
-                        ToolButton {
-                            icon.source: '../../icons/share.png'
-                            icon.color: 'transparent'
-                            onClicked: {
-                                var dialog = app.genericShareDialog.createObject(app, {
-                                    title: qsTr('Address'),
-                                    text: invoice.address
-                                })
-                                dialog.open()
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        DialogButtonContainer {
-            Layout.fillWidth: true
-
-            FlatButton {
-                Layout.fillWidth: true
-                Layout.preferredWidth: 1
-                text: qsTr('Save')
-                icon.source: '../../icons/save.png'
-                enabled: !invoice.isSaved && invoice.canSave
-                onClicked: {
-                    if (invoice.amount.isEmpty) {
-                        invoice.amountOverride = Config.unitsToSats(amountBtc.text)
-                        if (amountMax.checked)
-                            invoice.amountOverride.isMax = true
-                    }
-                    if (invoice.saveInvoice()) {
-                        app.stack.push(Qt.resolvedUrl('Invoices.qml'))
-                        dialog.close()
-                    }
-                }
-            }
-            FlatButton {
-                Layout.fillWidth: true
-                Layout.preferredWidth: 1
-                text: qsTr('Pay...')
-                icon.source: '../../icons/confirmed.png'
-                enabled: invoice.invoiceType != Invoice.Invalid && invoice.canPay
-                onClicked: {
-                    if (invoice.amount.isEmpty) {
-                        invoice.amountOverride = Config.unitsToSats(amountBtc.text)
-                        if (amountMax.checked)
-                            invoice.amountOverride.isMax = true
-                    }
-                    doPay() // only signal here
-                }
-            }
-        }
-
-    }
-
-    function setFiatValue() {
-        fiatValue.text = Daemon.fx.fiatValue(invoice.amount, false)
-    }
-
-    Component.onCompleted: {
-        if (invoice.amount.isEmpty && invoice.status != Invoice.Expired) {
-            amountContainer.editmode = true
-        } else if (invoice.amount.isMax) {
-            amountMax.checked = true
-        }
-        setFiatValue()
-        if (payImmediately) {
-            if (invoice.canPay) {
-                doPay()
-            }
-        }
-    }
-
-    Connections {
-        target: Daemon.currentWallet
-        function onBroadcastSucceeded(txid) {
-            if (dialog.broadcastTxid == txid) {
-                // our txid was broadcast successfully, close invoicedialog and show success popup
-                dialog.close()
-                var successdialog = app.messageDialog.createObject(mainView, {
-                    text: qsTr('Payment sent.')
-                })
-                successdialog.open()
-            }
-        }
-    }
-
-    Connections {
-        target: Daemon.fx
-        function onQuotesUpdated() { setFiatValue() }
-    }
-
-    FontMetrics {
-        id: amountFontMetrics
-        font: amountBtc.font
-    }
-}
+    
