@@ -443,4 +443,177 @@ ElDialog {
                 Label {
                     Layout.columnSpan: 2
                     Layout.topMargin: constants.paddingSmall
+visible: 'r' in invoice.lnprops && invoice.lnprops.r.length
+                    text: qsTr('Routing hints')
+                    color: constants.anonTextSecondary
+                    font.bold: true
+                    font.pixelSize: constants.fontSizeSmall
+                }
+
+                Repeater {
+                    visible: 'r' in invoice.lnprops && invoice.lnprops.r.length
+                    model: invoice.lnprops.r
+
+                    Rectangle {
+                        Layout.columnSpan: 2
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: routingHintLayout.height + constants.paddingLarge * 2
+                        radius: constants.paddingLarge
+                        color: constants.anonCardBackground
+                        border.width: 1
+                        border.color: constants.anonBorder
+
+                        RowLayout {
+                            id: routingHintLayout
+                            anchors.centerIn: parent
+                            width: parent.width - constants.paddingLarge * 2
+
+                            Label {
+                                text: modelData.scid
+                                color: constants.anonTextPrimary
+                            }
+                            Label {
+                                Layout.fillWidth: true
+                                text: modelData.node
+                                color: constants.anonTextPrimary
+                                wrapMode: Text.Wrap
+                            }
+                        }
+                    }
+                }
+
+                Label {
+                    Layout.columnSpan: 2
+                    Layout.topMargin: constants.paddingSmall
+                    visible: invoice.invoiceType == Invoice.LightningInvoice && invoice.address
+                    text: qsTr('Fallback address')
+                    color: constants.anonTextSecondary
+                    font.bold: true
+                    font.pixelSize: constants.fontSizeSmall
+                }
+
+                Rectangle {
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    visible: invoice.invoiceType == Invoice.LightningInvoice && invoice.address
+                    Layout.preferredHeight: fallbackLayout.height + constants.paddingLarge * 2
+                    radius: constants.paddingLarge
+                    color: constants.anonCardBackground
+                    border.width: 1
+                    border.color: constants.anonBorder
+
+                    RowLayout {
+                        id: fallbackLayout
+                        anchors.centerIn: parent
+                        width: parent.width - constants.paddingLarge * 2
+                        Label {
+                            text: invoice.address
+                            font.family: FixedFont
+                            font.pixelSize: constants.fontSizeMedium
+                            color: constants.anonTextPrimary
+                            Layout.fillWidth: true
+                            wrapMode: Text.Wrap
+                        }
+                        ToolButton {
+                            icon.source: '../../icons/share.png'
+                            icon.color: constants.anonAccent
+                            onClicked: {
+                                var dialog = app.genericShareDialog.createObject(app, {
+                                    title: qsTr('Address'),
+                                    text: invoice.address
+                                })
+                                dialog.open()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        DialogButtonContainer {
+            Layout.fillWidth: true
+
+            FlatButton {
+                Layout.fillWidth: true
+                Layout.preferredWidth: 1
+                Layout.preferredHeight: constants.paddingXXLarge * 2
+                text: qsTr('Save')
+                icon.source: '../../icons/save.png'
+                icon.color: constants.anonTextSecondary
+                enabled: !invoice.isSaved && invoice.canSave
+                onClicked: {
+                    if (invoice.amount.isEmpty) {
+                        invoice.amountOverride = Config.unitsToSats(amountBtc.text)
+                        if (amountMax.checked)
+                            invoice.amountOverride.isMax = true
+                    }
+                    if (invoice.saveInvoice()) {
+                        app.stack.push(Qt.resolvedUrl('Invoices.qml'))
+                        dialog.close()
+                    }
+                }
+            }
+            FlatButton {
+                Layout.fillWidth: true
+                Layout.preferredWidth: 1
+                Layout.preferredHeight: constants.paddingXXLarge * 2
+                text: qsTr('Pay...')
+                icon.source: '../../icons/confirmed.png'
+                icon.color: constants.anonAccent
+                enabled: invoice.invoiceType != Invoice.Invalid && invoice.canPay
+                onClicked: {
+                    if (invoice.amount.isEmpty) {
+                        invoice.amountOverride = Config.unitsToSats(amountBtc.text)
+                        if (amountMax.checked)
+                            invoice.amountOverride.isMax = true
+                    }
+                    doPay() // only signal here
+                }
+            }
+        }
+
+    }
+
+    function setFiatValue() {
+        fiatValue.text = Daemon.fx.fiatValue(invoice.amount, false)
+    }
+
+    Component.onCompleted: {
+        if (invoice.amount.isEmpty && invoice.status != Invoice.Expired) {
+            amountContainer.editmode = true
+        } else if (invoice.amount.isMax) {
+            amountMax.checked = true
+        }
+        setFiatValue()
+        if (payImmediately) {
+            if (invoice.canPay) {
+                doPay()
+            }
+        }
+    }
+
+    Connections {
+        target: Daemon.currentWallet
+        function onBroadcastSucceeded(txid) {
+            if (dialog.broadcastTxid == txid) {
+                // our txid was broadcast successfully, close invoicedialog and show success popup
+                dialog.close()
+                var successdialog = app.messageDialog.createObject(mainView, {
+                    text: qsTr('Payment sent.')
+                })
+                successdialog.open()
+            }
+        }
+    }
+
+    Connections {
+        target: Daemon.fx
+        function onQuotesUpdated() { setFiatValue() }
+    }
+
+    FontMetrics {
+        id: amountFontMetrics
+        font: amountBtc.font
+    }
+}
     
