@@ -37,15 +37,7 @@ Item {
         radius: constants.paddingLarge
         color: constants.anonCardBackground
         border.width: 1
-        border.color: constants.anonBorder
-
-        layer.enabled: true
-        layer.effect: DropShadow {
-            radius: 12
-            samples: 25
-            color: Qt.rgba(0.09, 0.53, 1, 0.15)
-            verticalOffset: 2
-        }
+        border.color: Qt.rgba(0.09, 0.53, 1, 0.3)
 
         GridLayout {
             id: balanceLayout
