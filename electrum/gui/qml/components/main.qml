@@ -30,7 +30,6 @@ ApplicationWindow
     Material.accent: "#1687FF"
     Material.background: "#080B10"
     Material.foreground: "#FFFFFF"
-    Material.dialogColor: "#0D1117"
     font.pixelSize: constants.fontSizeMedium
 
     property QtObject constants: appconstants
