@@ -31,11 +31,6 @@ Item {
 
         implicitHeight: balanceLayout.implicitHeight + constants.paddingXLarge * 2
 
-        leftPadding: constants.paddingXLarge
-        rightPadding: constants.paddingXLarge
-        topPadding: constants.paddingXLarge
-        bottomPadding: constants.paddingXLarge
-
         radius: constants.paddingLarge
         color: constants.anonCardBackground
         border.width: 1
@@ -43,8 +38,9 @@ Item {
 
         GridLayout {
             id: balanceLayout
-            columns: 3
             anchors.fill: parent
+            anchors.margins: constants.paddingXLarge
+            columns: 3
             opacity: Daemon.currentWallet.synchronizing || !Network.isConnected ? 0 : 1
 
             Label {
@@ -185,8 +181,6 @@ Item {
         }
     }
 
-    // instead of all these explicit connections, we should expose
-    // formatted balances directly as a property
     Connections {
         target: Config
         function onBaseUnitChanged() { setBalances() }
