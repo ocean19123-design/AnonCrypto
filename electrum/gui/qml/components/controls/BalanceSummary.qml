@@ -29,6 +29,8 @@ Item {
         anchors.right: parent.right
         anchors.margins: constants.paddingLarge
 
+        implicitHeight: balanceLayout.implicitHeight + constants.paddingXLarge * 2
+
         leftPadding: constants.paddingXLarge
         rightPadding: constants.paddingXLarge
         topPadding: constants.paddingXLarge
