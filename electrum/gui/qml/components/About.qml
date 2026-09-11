@@ -29,9 +29,9 @@ Pane {
                     width: parent.width
                     height: width
                     radius: width / 2
-                    color: constants.accentColor
+                    color: constants.anonAccent
                     border.width: 2
-                    border.color: Qt.lighter(constants.accentColor, 1.3)
+                    border.color: Qt.lighter(constants.anonAccent, 1.3)
 
                     Label {
                         anchors.centerIn: parent
