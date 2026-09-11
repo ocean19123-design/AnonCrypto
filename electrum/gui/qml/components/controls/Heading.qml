@@ -6,6 +6,7 @@ RowLayout {
     id: root
 
     property string text
+    property alias color: label.color
     property alias font: label.font
 
     Layout.fillWidth: true
