@@ -67,14 +67,8 @@ ElDialog {
 
                             radius: constants.paddingLarge
                             color: 'white'
-
-                            layer.enabled: true
-                            layer.effect: DropShadow {
-                                radius: 10
-                                samples: 20
-                                color: Qt.rgba(0.09, 0.53, 1, 0.2)
-                                verticalOffset: 2
-                            }
+                            border.width: 1
+                            border.color: Qt.rgba(0.09, 0.53, 1, 0.3)
 
                             QRImage {
                                 anchors.centerIn: parent
