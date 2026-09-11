@@ -130,22 +130,22 @@ ApplicationWindow
         topPadding: app.statusBarHeight
 
         background: Rectangle {
-    implicitHeight: 56
-    color: constants.anonCardBackground
+            implicitHeight: 56
+            color: constants.anonCardBackground
 
-    layer.enabled: true
-    layer.effect: ElevationEffect {
-        elevation: 2
-        fullWidth: true
-    }
+            layer.enabled: true
+            layer.effect: ElevationEffect {
+                elevation: 2
+                fullWidth: true
+            }
 
-    Rectangle {
-        anchors.bottom: parent.bottom
-        width: parent.width
-        height: 1
-        color: constants.anonBorder
-    }
-}
+            Rectangle {
+                anchors.bottom: parent.bottom
+                width: parent.width
+                height: 1
+                color: constants.anonBorder
+            }
+        }
 
         ColumnLayout {
             spacing: 0
@@ -183,35 +183,35 @@ ApplicationWindow
                         }
 
                         Rectangle {
-    Layout.preferredWidth: constants.iconSizeMedium
-    Layout.preferredHeight: constants.iconSizeMedium
-    Layout.leftMargin: constants.paddingSmall
-    radius: constants.iconSizeMedium / 2
-    color: constants.anonAccent
-    visible: Daemon.currentWallet &&
-        (!stack.currentItem || !stack.currentItem.title || stack.currentItem.title == Daemon.currentWallet.name)
+                            Layout.preferredWidth: constants.iconSizeMedium
+                            Layout.preferredHeight: constants.iconSizeMedium
+                            Layout.leftMargin: constants.paddingSmall
+                            radius: constants.iconSizeMedium / 2
+                            color: constants.anonAccent
+                            visible: Daemon.currentWallet &&
+                                (!stack.currentItem || !stack.currentItem.title || stack.currentItem.title == Daemon.currentWallet.name)
 
-    Label {
-        anchors.centerIn: parent
-        text: "AF"
-        font.pixelSize: constants.fontSizeXSmall
-        font.bold: true
-        color: "white"
-    }
-}
+                            Label {
+                                anchors.centerIn: parent
+                                text: "AF"
+                                font.pixelSize: constants.fontSizeXSmall
+                                font.bold: true
+                                color: "white"
+                            }
+                        }
 
                         Label {
-    Layout.fillWidth: true
-    Layout.preferredHeight: Math.max(implicitHeight, toolbarTopLayout.height)
-    text: stack.currentItem && stack.currentItem.title
-        ? stack.currentItem.title
-        : Daemon.currentWallet.name
-    elide: Label.ElideRight
-    verticalAlignment: Qt.AlignVCenter
-    font.pixelSize: constants.fontSizeLarge
-    font.bold: true
-    color: constants.anonTextPrimary
-}
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: Math.max(implicitHeight, toolbarTopLayout.height)
+                            text: stack.currentItem && stack.currentItem.title
+                                ? stack.currentItem.title
+                                : Daemon.currentWallet.name
+                            elide: Label.ElideRight
+                            verticalAlignment: Qt.AlignVCenter
+                            font.pixelSize: constants.fontSizeLarge
+                            font.bold: true
+                            color: constants.anonTextPrimary
+                        }
                     }
                 }
 
@@ -646,10 +646,10 @@ ApplicationWindow
             })
             dialog.open()
             close.accepted = false
-}
+        }
     }
 
-        property var _loadingWalletContext: null
+    property var _loadingWalletContext: null
 
     Connections {
         target: Biometrics
@@ -949,5 +949,4 @@ ApplicationWindow
     property var _lastActive: 0 // record time of last activity
     property bool _lockDialogShown: false
 
-}
-     
+}     
