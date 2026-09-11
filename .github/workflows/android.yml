@@ -48,8 +48,8 @@ jobs:
             exit 1
           fi
 
-          # Pattern 2: Setting read-only Material properties
-          if grep -rn 'Material.dialogColor' electrum/gui/qml/ ; then
+          # Pattern 2: Assigning to read-only Material properties (colon = assignment)
+          if grep -rn 'Material\.dialogColor\s*:' electrum/gui/qml/ ; then
             echo "ERROR: Material.dialogColor is read-only — this will crash the app"
             exit 1
           fi
