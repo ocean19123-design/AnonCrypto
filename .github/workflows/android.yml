@@ -38,6 +38,32 @@ jobs:
           sudo docker image prune --all --force || true
           df -h
 
+      - name: Quick QML sanity check
+        run: |
+          echo "Checking for known crash patterns..."
+
+          # Pattern 1: DropShadow usage (Qt5Compat.GraphicalEffects not bundled in Android build)
+          if grep -rn 'DropShadow' electrum/gui/qml/ ; then
+            echo "ERROR: DropShadow found in QML — this will crash the app on Android"
+            exit 1
+          fi
+
+          # Pattern 2: Setting read-only Material properties
+          if grep -rn 'Material.dialogColor' electrum/gui/qml/ ; then
+            echo "ERROR: Material.dialogColor is read-only — this will crash the app"
+            exit 1
+          fi
+
+          # Pattern 3: Report any PrefsHeading usages so we can spot check
+          echo "PrefsHeading usages:"
+          grep -rn 'PrefsHeading' electrum/gui/qml/components/ | head -20 || true
+
+          # Pattern 4: Report any Heading with color set directly
+          echo "Heading with color:"
+          grep -rn -A2 'Heading {' electrum/gui/qml/components/ | grep 'color:' || echo "  none found"
+
+          echo "Sanity check passed."
+
       - name: Cache python packages
         uses: actions/cache@v4
         with:
