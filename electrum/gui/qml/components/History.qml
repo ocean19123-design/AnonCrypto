@@ -36,7 +36,9 @@ Pane {
             ColumnLayout {
                 id: headerLayout
                 anchors.centerIn: parent
+                width: parent.width
                 BalanceSummary {
+                    Layout.fillWidth: true
                     Layout.topMargin: constants.paddingXLarge
                     Layout.bottomMargin: constants.paddingXLarge
                 }
